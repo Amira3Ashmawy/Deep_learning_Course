@@ -45,7 +45,7 @@ class KNearestNeighbor(object):
       dists = self.compute_distances_two_loops(X)
     else:
       raise ValueError('Invalid value %d for num_loops' % num_loops)
-
+    print dists
     return self.predict_labels(dists, k=k)
 
   def compute_distances_two_loops(self, X):
@@ -123,7 +123,7 @@ class KNearestNeighbor(object):
     # HINT: Try to formulate the l2 distance using matrix multiplication    #
     #       and two broadcast sums.  (500,3072) - (5000,3072)                                       #
     #########################################################################
-    dists = X - self.X_train
+    dists =  np.array(np.sum(np.absolute(np.subtract(X[i] ,self.X_train)),axis=1).tolist() for i in range(num_test))
         #########################################################################
     #                         END OF YOUR CODE                              #
     #########################################################################
@@ -142,6 +142,7 @@ class KNearestNeighbor(object):
     - y: A numpy array of shape (num_test,) containing predicted labels for the
       test data, where y[i] is the predicted label for the test point X[i].  
     """
+    print(dists)
     num_test = dists.shape[0]
     y_pred = np.zeros(num_test)
     indx_arr = dists.argsort(1)[:][:,:k]
